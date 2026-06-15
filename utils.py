@@ -2,7 +2,7 @@ import random
 from datetime import datetime, timedelta
 
 CLUSTERS = {
-    "power": ["сила", "мощь", "титан", "гром", "энергия"],
+    "power": ["сила", "мощь", "титан", "гром"],
     "war": ["воин", "берсерк", "рыцарь"],
     "leadership": ["лидер", "главный", "король"],
     "nation": ["россия", "русский", "империя"],
@@ -12,8 +12,10 @@ CLUSTERS = {
 def gen_nicks(n=80):
     out = set()
     keys = list(CLUSTERS.keys())
+
     while len(out) < n:
         out.add(random.choice(CLUSTERS[random.choice(keys)]))
+
     return list(out)
 
 
@@ -29,10 +31,10 @@ def parse_date(text):
     t = text.lower()
     now = datetime.now()
 
-    if "сегодня" in t:
-        return now
     if "вчера" in t:
         return now - timedelta(days=1)
+    if "сегодня" in t:
+        return now
 
     try:
         p = t.split()
