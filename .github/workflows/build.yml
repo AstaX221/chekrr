@@ -30,3 +30,4 @@ jobs:
       with:
         name: GalaxyToolV6
         path: dist/main.exe
+pip install websockets
