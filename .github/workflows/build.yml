@@ -1,4 +1,4 @@
-name: Build Galaxy Tool V6
+name: Build GalaxyToolV6
 
 on:
   push:
@@ -24,18 +24,18 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
+
+      - name: Install missing runtime libs
+        run: |
           pip install websockets
           pip install aiohttp
           pip install qasync
           pip install PyQt5
 
-      - name: Build EXE with PyInstaller
-        run: |
-          pyinstaller --noconfirm --onefile --noconsole ^
-            --name GalaxyToolV6 ^
-            main.py
+      - name: Build EXE (PyInstaller)
+        run: pyinstaller --noconfirm --onefile --noconsole --name GalaxyToolV6 main.py
 
-      - name: Upload EXE artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: GalaxyToolV6
