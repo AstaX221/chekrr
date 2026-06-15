@@ -1,5 +1,5 @@
 PyQt5
 qasync
 aiohttp
-websocket-client
+websockets
 openpyxl
