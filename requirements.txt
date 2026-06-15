@@ -1,3 +1,5 @@
-pyqt5
-requests
+PyQt5
+qasync
+aiohttp
 websocket-client
+openpyxl
