@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -17,25 +17,16 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
-
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: Install missing runtime libs
-        run: |
-          pip install websockets
-          pip install aiohttp
-          pip install qasync
-          pip install PyQt5
+      - name: Build EXE
+        run: pyinstaller --noconfirm --clean --onefile --noconsole --name GalaxyToolV6 main.py
 
-      - name: Build EXE (PyInstaller)
-        run: pyinstaller --noconfirm --onefile --noconsole --name GalaxyToolV6 main.py
-
-      - name: Upload artifact
+      - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: GalaxyToolV6
