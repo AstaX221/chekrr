@@ -15,7 +15,7 @@ class App(QWidget):
 
         self.engine = Engine()
 
-        self.setWindowTitle("Galaxy Tool V6")
+        self.setWindowTitle("Galaxy Tool V6 FIX")
         self.resize(900, 600)
 
         layout = QVBoxLayout()
@@ -25,7 +25,6 @@ class App(QWidget):
         self.rc = QLineEdit()
 
         self.btn = QPushButton("START")
-
         self.log = QLabel("LOG")
 
         self.table = QTableWidget()
@@ -45,20 +44,25 @@ class App(QWidget):
 
     @asyncSlot()
     async def start(self):
+
         self.engine.user_id = self.uid.text()
         self.engine.password = self.pwd.text()
 
-        # WS
+        # WS (не блокирует)
         self.ws = WSClient(
             "wss://galaxy.mobstudio.ru/websocket",
             self.rc.text()
         )
         asyncio.create_task(self.ws.run())
 
-        # SEARCH LOOP (ASYNC)
-        nicks = gen_nicks(80)
+        # MAIN LOOP (НЕ БЛОКИРУЕТ UI)
+        asyncio.create_task(self.scan())
 
-        for nick in nicks:
+
+    async def scan(self):
+
+        for nick in gen_nicks(80):
+
             self.log.setText(f"checking {nick}")
 
             try:
@@ -91,14 +95,16 @@ class App(QWidget):
             except Exception as e:
                 self.log.setText(str(e))
 
+            await asyncio.sleep(0.1)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 
-    window = App()
-    window.show()
+    w = App()
+    w.show()
 
     with loop:
         loop.run_forever()
