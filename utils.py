@@ -3,19 +3,17 @@ from datetime import datetime, timedelta
 
 CLUSTERS = {
     "power": ["сила", "мощь", "титан", "гром", "энергия"],
-    "war": ["воин", "берсерк", "рыцарь", "гладиатор"],
-    "leadership": ["лидер", "главный", "вождь", "король"],
-    "nation": ["россия", "русский", "держава", "империя"],
-    "dark": ["смерть", "хаос", "тьма", "страх"]
+    "war": ["воин", "берсерк", "рыцарь"],
+    "leadership": ["лидер", "главный", "король"],
+    "nation": ["россия", "русский", "империя"],
+    "dark": ["смерть", "хаос", "тьма"]
 }
 
-def generate_nicks(n=80):
-    keys = list(CLUSTERS.keys())
+def gen_nicks(n=80):
     out = set()
-
+    keys = list(CLUSTERS.keys())
     while len(out) < n:
         out.add(random.choice(CLUSTERS[random.choice(keys)]))
-
     return list(out)
 
 
@@ -28,18 +26,17 @@ def parse_date(text):
     if not text:
         return None
 
-    text = text.lower()
+    t = text.lower()
     now = datetime.now()
 
-    if "сегодня" in text:
+    if "сегодня" in t:
         return now
-
-    if "вчера" in text:
+    if "вчера" in t:
         return now - timedelta(days=1)
 
     try:
-        parts = text.split()
-        return datetime(now.year, MONTHS[parts[1]], int(parts[0]))
+        p = t.split()
+        return datetime(now.year, MONTHS[p[1]], int(p[0]))
     except:
         return None
 
